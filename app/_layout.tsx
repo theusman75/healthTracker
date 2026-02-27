@@ -4,19 +4,29 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useAuthStore, useHealthStore } from '@/store/store';
+import { useEffect } from 'react';
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const { restoreSession } = useAuthStore();
+  const { restoreEntries } = useHealthStore();
+
+  useEffect(() => {
+    restoreSession();
+    restoreEntries()
+  }, []);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="auth/login" />
+        <Stack.Screen name="app/dashboard" />
+        <Stack.Screen name="app/addHealthEntry" />
+        <Stack.Screen name="app/healthHistory" />
+        <Stack.Screen name="app/[id]" />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

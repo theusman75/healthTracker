@@ -1,50 +1,210 @@
-# Welcome to your Expo app 👋
+# Personal Health Tracker 📱
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a **React Native (Expo)** project built as part of a technical
+assessment.
 
-## Get started
+The application allows users to:
 
-1. Install dependencies
+- Log daily health metrics\
+- Track symptoms\
+- View historical health records\
+- Receive alerts for abnormal readings
 
-   ```bash
-   npm install
-   ```
+The project follows clean architecture principles with a feature-based
+scalable structure.
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 🚀 Get started
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Install dependencies
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Start the app
 
-## Learn more
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+In the output, you'll find options to open the app in a:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Development build\
+- Android emulator\
+- iOS simulator\
+- Expo Go
 
-## Join the community
+You can start developing by editing the files inside the **app**
+directory.\
+This project uses **Expo Router (file-based routing)**.
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 🏗 Architecture
+
+The project follows a **feature-based architecture** with separation of
+concerns.
+
+### Folder Structure
+
+    app/
+     ├── auth/
+     ├── app/
+     └── _layout.tsx
+
+### Architectural Principles
+
+- Feature-based modular structure\
+- Business logic separated from UI\
+- Centralized state management (Zustand)\
+- Derived state computed via memoization\
+- Route protection using Expo Router layouts
+
+---
+
+## 🔐 Authentication Flow
+
+- Mock authentication (no backend)
+- Global auth state managed with Zustand
+- Session persistence using AsyncStorage
+- Route-level protection via Expo Router groups:
+  - `auth` → Login
+  - `app` → Protected screens
+
+---
+
+## 🌡 Health Features
+
+### Add Health Entry
+
+- Built with **Formik + Yup**
+- Strong validation rules
+- Numeric constraints enforced
+- Timestamp-based unique IDs
+
+### Alert Logic
+
+Alerts trigger when:
+
+- Heart Rate \> 120 bpm\
+- SpO2 \< 90%\
+- Temperature \> 39 °C
+
+Alert detection logic is separated into a pure utility function:
+
+    health/utils/alertUtils.ts
+
+This ensures business logic is not coupled with UI and remains testable.
+
+---
+
+## 📊 Health History
+
+- Entries sorted by latest first\
+- Abnormal readings visually highlighted\
+- Entry details accessible via dynamic routing\
+- Derived state handled using `useMemo`
+
+---
+
+## 🧠 State Management
+
+### Zustand
+
+Zustand was selected because:
+
+- Minimal boilerplate\
+- Cleaner than Redux for medium-scale apps\
+- Avoids unnecessary re-renders\
+- Easy AsyncStorage integration\
+- Keeps business logic centralized
+
+---
+
+## 💾 Local Storage
+
+Data persistence is implemented using:
+
+    @react-native-async-storage/async-storage
+
+Zustand persistence middleware is used to store:
+
+- Authentication session
+- Health entries
+
+---
+
+## 🧪 Testing
+
+Testing is implemented using **Jest**.
+
+### Covered Areas
+
+- Health alert logic\
+- Validation schema behavior\
+- Store entry addition logic\
+- At least one component test
+
+Run tests with:
+
+```bash
+npm test
+```
+
+---
+
+## 🧩 Assumptions Made
+
+- Authentication is mock-based\
+- Single-user application\
+- Entries are stored locally\
+- Timestamp-based IDs are sufficient\
+- No real-time medical validation required\
+- Device-level storage is acceptable
+
+---
+
+## ⚠ Known Limitations
+
+- No backend integration\
+- No encrypted storage layer\
+- No offline synchronization\
+- No pagination for very large datasets\
+- No advanced charts or analytics\
+- No biometric authentication
+
+---
+
+## 📈 Possible Improvements
+
+- REST API integration\
+- Secure storage for sensitive health data\
+- Health trend charts\
+- Export/share health reports\
+- Push notifications for critical alerts\
+- Expanded unit test coverage\
+- Performance optimization for large datasets
+
+---
+
+## ✅ Assessment Checklist
+
+Requirement Status
+
+---
+
+Authentication ✅ Implemented
+Dashboard ✅ Implemented
+Add Health Entry ✅ Implemented
+Validation ✅ Implemented
+Alert Logic Separation ✅ Implemented
+Health History ✅ Implemented
+Sorting ✅ Implemented
+Highlight Abnormal ✅ Implemented
+State Management ✅ Zustand
+Local Storage ✅ AsyncStorage
+Clean Architecture ✅ Feature-based
+Testing ✅ Jest
+README ✅ Provided
